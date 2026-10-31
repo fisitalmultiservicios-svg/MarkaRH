@@ -1,5 +1,9 @@
 # Validación de la entrega UX
 
+## Rediseño visual 2
+
+Se ejecutaron las pruebas de regresión generales, las del HTML autónomo por HTTP y un recorrido específico del nuevo diseño. Se verificaron búsqueda por tarjeta y estado sin resultados, progreso de tres pasos, selección de evento, limpieza de PIN al cambiar de persona, regreso a entrada como opción inicial, pestañas del sitio con teclado y vista del marcador identificado a 390, 600, 768, 1024 y 1440 píxeles. También se comprobó ausencia de desbordamiento horizontal con texto ampliado y alto contraste.
+
 ## Resultado
 
 Las páginas separadas y el HTML autónomo servido por HTTP pasaron las pruebas funcionales en Chromium. Se inspeccionaron capturas de escritorio y móvil. No se detectaron errores JavaScript durante los recorridos automatizados.

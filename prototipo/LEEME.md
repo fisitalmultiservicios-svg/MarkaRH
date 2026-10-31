@@ -1,4 +1,4 @@
-# MarkaRH · Prototipo UX interactivo
+# MarkaRH · Prototipo UX interactivo · Diseño visual 2
 
 Prototipo previo al desarrollo del sistema, basado en la especificación funcional proporcionada. HTML, CSS y JavaScript sin dependencias de red, frameworks ni compilación.
 
@@ -15,6 +15,13 @@ python3 -m http.server 8000 --bind 127.0.0.1
 Abre el servidor local en tu navegador. Las páginas son `index.html` (web), `marcador.html` (representación del cliente instalado) y `admin.html` (empresa y Maestro). Usa siempre el mismo navegador, perfil y origen. El archivo autónomo usa la misma clave de almacenamiento; servido en el mismo origen comparte su demostración con las páginas separadas.
 
 No hay usuarios ni contraseñas reales: el acceso administrativo tiene un selector de rol y una confirmación de alcance. El PIN de demostración para todos los empleados es **123456**. La aplicación real no deberá usar estas credenciales ni los controles de acceso simulados.
+
+## Diseño visual actualizado
+
+- Web oficial con ilustración vectorial del producto, beneficios gráficos y vistas interactivas de Windows, Android y administración.
+- Marcador guiado: tarjetas con nombres → PIN → confirmación. En móvil, la selección se oculta al pasar al PIN; Cambiar permite volver sin conservar la identidad anterior.
+- Entrada, salida y descansos con iconos y estado seleccionado, y confirmación visual de guardado.
+- La actividad reciente permanece plegada para reducir distracciones y exposición de nombres.
 
 ## Qué funciona
 
@@ -57,6 +64,7 @@ Las pruebas funcionales requieren Python, Playwright y Chromium; la aplicación 
 ```sh
 python3 tests/ux_smoke.py
 python3 tests/standalone_smoke.py
+python3 tests/visual_smoke.py
 ```
 
 Las capturas se generan en `capturas/`. Para actualizar el HTML autónomo y el ZIP después de cambiar los archivos fuente:

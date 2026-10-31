@@ -21,6 +21,8 @@ for key, file in [('web','index.html'),('marcador','marcador.html'),('admin','ad
     for filename, target in [('index.html','web'),('marcador.html','marcador'),('admin.html','admin')]:
         content = content.replace(f'href="{filename}"', f'href="?page={target}"')
     content = content.replace('assets/logo.svg', logo)
+    for svg in (root / 'assets').glob('*.svg'):
+        content = content.replace('assets/'+svg.name, 'data:image/svg+xml,'+quote(svg.read_text(), safe=''))
     pages[key] = content
 encoded = json.dumps(pages, ensure_ascii=False).replace('<', '\\u003c')
 standalone = '<!doctype html><html lang="es-CR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MarkaRH · Prototipo UX</title><script>const pages='+encoded+';const page=new URLSearchParams(location.search).get("page")||"web";document.open();document.write(pages[page]||pages.web);document.close();</script></html>'

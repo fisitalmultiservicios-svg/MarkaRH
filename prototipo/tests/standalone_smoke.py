@@ -22,14 +22,14 @@ def run():
      ctx.close()
      continue
     raise
-   expect(page.locator('#hero-title')).to_contain_text('Cada jornada')
+   expect(page.locator('#hero-title')).to_contain_text('Tu equipo marca')
    page.get_by_role('link',name='Explorar marcador').click()
-   expect(page.locator('#employee-select')).to_be_visible()
+   expect(page.locator('[data-employee=E001]')).to_be_visible()
    page.locator('#technical').click()
    page.locator('#mode').select_option('auto')
    page.locator('#save-tech').click()
    expect(page.locator('#punch-types')).to_be_hidden()
-   page.locator('#employee-select').select_option('E001')
+   page.locator('[data-employee=E001]').click()
    page.locator('#pin').fill('123456')
    page.locator('#punch').click()
    expect(page.get_by_role('heading',name='Marcación guardada')).to_be_visible()

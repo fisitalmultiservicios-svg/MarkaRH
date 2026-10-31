@@ -2,6 +2,14 @@
 
 Prototipo UX interactivo del marcador instalado, web oficial, administración empresarial y vista Maestro.
 
+## Diseño visual actualizado
+
+Web oficial más gráfica y marcador guiado de tres pasos: nombre, PIN y confirmación.
+
+- [Ver la web oficial](prototipo/capturas/01-web-oficial.png)
+- [Ver el marcador](prototipo/capturas/02-marcador.png)
+- [Ver el marcador en móvil](prototipo/capturas/movil-marcador-pin.png)
+
 ## Descargas desde GitHub
 
 - [Descargar paquete completo ZIP](https://github.com/fisitalmultiservicios-svg/MarkaRH/raw/refs/heads/prototipo-ux/MarkaRH-prototipo-UX.zip)
