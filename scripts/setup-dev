@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$ROOT_DIR"
+docker --host=unix:///var/run/docker.sock build --secret id=ca_bundle,src=/etc/ssl/certs/ca-certificates.crt -t markarh-php:8.3 -f infra/docker/php/Dockerfile .
+# Each task is already isolated; use this checkout, without creating a worktree.
+# Keep existing credentials and APP_KEY intact when repeating setup.
+if [ ! -f .env ]; then
+  umask 077
+  docker --host=unix:///var/run/docker.sock run --rm markarh-php:8.3 php -r '
+    echo "DB_PASSWORD=".bin2hex(random_bytes(24))."\nMYSQL_ROOT_PASSWORD=".bin2hex(random_bytes(24))."\n";
+  ' > .env
+fi
+if [ ! -f apps/web_laravel/.env ]; then
+  cp apps/web_laravel/.env.example apps/web_laravel/.env
+  chmod 600 apps/web_laravel/.env
+fi
+docker --host=unix:///var/run/docker.sock compose run --rm app composer install --no-interaction --prefer-source
+if ! grep -Eq '^APP_KEY=base64:.+' apps/web_laravel/.env; then
+  docker --host=unix:///var/run/docker.sock compose run --rm app php artisan key:generate
+fi
+docker --host=unix:///var/run/docker.sock compose run --rm app php artisan migrate --force
+printf '%s\n' 'Development database prepared. Create the first Maestro with: ./scripts/php php artisan markarh:create-master'

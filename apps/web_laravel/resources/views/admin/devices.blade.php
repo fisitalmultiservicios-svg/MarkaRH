@@ -1,0 +1,5 @@
+@extends('layout')
+@section('title', 'Dispositivos')
+@section('content')
+<div class="page-head"><div><h1>Terminales de tu empresa</h1><p>Solo el Maestro emite credenciales de instalación.</p></div></div><div class="notice official-notice">Solicita al Maestro una credencial temporal para la sucursal. Se consume una vez mediante la API de enrolamiento. La app Windows/Android todavía está en desarrollo.</div><section class="card"><div class="table-wrap"><table><thead><tr><th>Nombre</th><th>Sucursal</th><th>Estado</th><th></th></tr></thead><tbody>@forelse($devices as $device)<tr><td>{{ $device->name }}</td><td>{{ $device->branch->name }}</td><td>{{ $device->revoked_at ? 'Revocada' : 'Autorizada' }}</td><td>@unless($device->revoked_at)<form method="post" action="{{ route('admin.devices.revoke', $device) }}">@csrf<button class="btn danger small">Revocar acceso</button></form>@endunless</td></tr>@empty<tr><td colspan="4" class="empty">No hay terminales activadas.</td></tr>@endforelse</tbody></table></div></section>
+@endsection

@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'required' => 'El campo :attribute es obligatorio.',
+    'accepted' => 'Debes aceptar :attribute.',
+    'email' => 'Ingresa un correo válido en :attribute.',
+    'string' => 'El campo :attribute debe ser texto.',
+    'integer' => 'El campo :attribute debe ser un número entero.',
+    'boolean' => 'El campo :attribute debe indicar sí o no.',
+    'array' => 'El campo :attribute debe contener una lista válida.',
+    'confirmed' => 'La confirmación de :attribute no coincide.',
+    'unique' => 'El valor de :attribute ya está registrado.',
+    'exists' => 'La opción seleccionada en :attribute no está disponible.',
+    'in' => 'La opción de :attribute no es válida.',
+    'lowercase' => 'El campo :attribute debe estar en minúsculas.',
+    'date' => 'La fecha de :attribute no es válida.',
+    'regex' => 'El formato de :attribute no es válido.',
+    'uuid' => 'El identificador de :attribute no es válido.',
+    'after_or_equal' => 'La fecha de :attribute debe ser igual o posterior a :date.',
+    'before' => 'La fecha de :attribute debe ser anterior a :date.',
+    'min' => ['string' => ':attribute debe tener al menos :min caracteres.', 'numeric' => ':attribute debe ser al menos :min.', 'array' => ':attribute debe contener al menos :min elementos.'],
+    'max' => ['string' => ':attribute no puede superar :max caracteres.', 'numeric' => ':attribute no puede superar :max.', 'array' => ':attribute no puede contener más de :max elementos.'],
+    'password' => ['letters' => 'La contraseña debe contener letras.', 'mixed' => 'La contraseña debe incluir mayúsculas y minúsculas.', 'numbers' => 'La contraseña debe contener números.', 'symbols' => 'La contraseña debe contener símbolos.', 'uncompromised' => 'Elige una contraseña diferente.'],
+    'attributes' => ['name' => 'nombre', 'email' => 'correo', 'password' => 'contraseña', 'branch' => 'sucursal', 'branch_id' => 'sucursal', 'admin_name' => 'nombre del administrador', 'internal_code' => 'código interno', 'job' => 'puesto', 'company' => 'empresa', 'message' => 'mensaje', 'consent' => 'la autorización de guardado'],
+];

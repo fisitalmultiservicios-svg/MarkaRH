@@ -1,0 +1,45 @@
+services:
+  app:
+    image: markarh-php:8.3
+    build:
+      context: .
+      dockerfile: infra/docker/php/Dockerfile
+      secrets: [ca_bundle]
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    working_dir: /app
+    command: php artisan serve --host=0.0.0.0 --port=8000 --no-reload
+    ports: ["127.0.0.1:8001:8000"]
+    volumes:
+      - ./apps/web_laravel:/app
+      - /etc/ssl/certs/ca-certificates.crt:/run/ca.pem:ro
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: markarh
+      DB_USERNAME: markarh
+      DB_PASSWORD: ${DB_PASSWORD:?Generate root .env first; see scripts/setup-dev}
+      COMPOSER_CAFILE: /run/ca.pem
+      GIT_SSL_CAINFO: /run/ca.pem
+      COMPOSER_HOME: /tmp/composer
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: markarh
+      MYSQL_USER: markarh
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Generate root .env first}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Generate root .env first}
+    volumes: ["mysql_data:/var/lib/mysql"]
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost --silent"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+volumes:
+  mysql_data:
+secrets:
+  ca_bundle:
+    file: /etc/ssl/certs/ca-certificates.crt

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$ROOT_DIR"
+docker --host=unix:///var/run/docker.sock compose up -d --wait db
+docker --host=unix:///var/run/docker.sock compose exec -T db sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql --user=root' < infra/mysql/create-test.sql
+docker --host=unix:///var/run/docker.sock compose run --rm app php artisan test
+docker --host=unix:///var/run/docker.sock compose run --rm -e DB_DATABASE=markarh_test app vendor/bin/phpunit --configuration=phpunit.mysql.xml
+docker --host=unix:///var/run/docker.sock compose run --rm app vendor/bin/pint --test

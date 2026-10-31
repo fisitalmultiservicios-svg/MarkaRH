@@ -1,29 +1,29 @@
 # MarkaRH
 
-Prototipo UX interactivo del marcador instalado, web oficial, administración empresarial y vista Maestro.
+Sistema de asistencia laboral para empresas de Costa Rica. Se inició el código oficial del backend y del portal administrativo sobre el UX aprobado.
 
-## Diseño visual actualizado
+## Código oficial
 
-Web oficial más gráfica y marcador guiado de tres pasos: nombre, PIN y confirmación.
+- [Aplicación Laravel / PHP](apps/web_laravel)
+- [Instalación y desarrollo](docs/DEVELOPMENT.md)
+- [Estado real de implementación](docs/STATUS.md)
+- [Arquitectura](docs/ARCHITECTURE.md) · [Modelo de datos](docs/DATA_MODEL.md)
+- [Plan por fases](docs/ROADMAP.md) · [API de terminales](docs/API_SYNC.md)
+- [Seguridad y privacidad](docs/SECURITY_PRIVACY.md) · [Validación cPanel pendiente](docs/DEPLOY_CPANEL.md)
+- [Capturas de la base oficial](docs/capturas-oficiales)
+- [Descargar código oficial desde GitHub](https://github.com/fisitalmultiservicios-svg/MarkaRH/archive/refs/heads/desarrollo-oficial.zip)
 
-- [Ver la web oficial](prototipo/capturas/01-web-oficial.png)
-- [Ver el marcador](prototipo/capturas/02-marcador.png)
-- [Ver el marcador en móvil](prototipo/capturas/movil-marcador-pin.png)
+La base oficial usa sesiones, contraseñas hasheadas y persistencia del servidor. No utiliza el PIN ni los roles simulados del prototipo. El Maestro crea las empresas y emite credenciales de instalación de un solo uso. La API de terminal es independiente del login administrativo; la web no ofrece marcación de empleados.
 
-## Descargas desde GitHub
+**En desarrollo, no habilitado para uso laboral real.** MFA, apps nativas Windows/Android, almacenamiento local cifrado, firmas de terminal, cálculo laboral y validación cPanel siguen pendientes. Consulta el estado de cada capacidad antes de desplegar.
 
-- [Descargar paquete completo ZIP](https://github.com/fisitalmultiservicios-svg/MarkaRH/raw/refs/heads/prototipo-ux/MarkaRH-prototipo-UX.zip)
-- [Descargar HTML autónomo](https://github.com/fisitalmultiservicios-svg/MarkaRH/raw/refs/heads/prototipo-ux/prototipo/MarkaRH-demo.html)
-- [Instrucciones y recorrido](prototipo/LEEME.md)
-- [Validación y limitaciones](prototipo/VALIDACION.md)
+## Prototipo UX aprobado
 
-El ZIP incluye el HTML autónomo, archivos fuente, capturas e instrucciones. Es una demostración local con datos ficticios, sin backend ni autenticación real. PIN demo: `123456`.
+El directorio `prototipo/` conserva la demostración visual independiente. Sus datos ficticios y el PIN `123456` pertenecen solo a la demo.
 
-Para ejecutar las páginas separadas:
+- [Ver web oficial de referencia](prototipo/capturas/01-web-oficial.png)
+- [Ver marcador de referencia](prototipo/capturas/02-marcador.png)
+- [Instrucciones del prototipo](prototipo/LEEME.md)
+- [Descargar ZIP de la demo](https://github.com/fisitalmultiservicios-svg/MarkaRH/raw/refs/heads/prototipo-ux/MarkaRH-prototipo-UX.zip)
 
-```sh
-cd prototipo
-python3 -m http.server 8000 --bind 127.0.0.1
-```
-
-El marcador HTML representa la futura aplicación instalada; no es una función de marcación de la web del producto. Los instaladores Windows/Android, cifrado, biometría y servicios de producción no están implementados.
+El marcador HTML es la representación de la futura app instalada. No se incorpora como marcador en el portal oficial. El activo vectorial de marca sigue siendo una recreación simplificada; se sustituirá al disponer del archivo maestro.

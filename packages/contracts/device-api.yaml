@@ -1,0 +1,67 @@
+openapi: 3.1.0
+info:
+  title: MarkaRH Device API
+  version: 0.1.0
+  description: Ingesta inicial de evidencias de terminal. No es una API de marcación pública.
+servers:
+  - url: /api/v1/device
+paths:
+  /enroll:
+    post:
+      summary: Consumir una credencial temporal de instalación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [enrollment_code, name]
+              properties:
+                enrollment_code: {type: string}
+                name: {type: string, maxLength: 100}
+      responses:
+        '201': {description: Token devuelto una sola vez}
+        '422': {description: Credencial inválida, consumida o vencida}
+  /config:
+    get:
+      summary: Leer identidad y configuración básica autorizada
+      security: [{deviceToken: []}]
+      responses:
+        '200': {description: Empresa y sucursal derivadas de la identidad de terminal}
+        '401': {description: Terminal inválida o revocada}
+  /events/batch:
+    post:
+      summary: Recibir hechos creados previamente en una instalación autorizada
+      security: [{deviceToken: []}]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [events]
+              additionalProperties: false
+              properties:
+                events:
+                  type: array
+                  minItems: 1
+                  maxItems: 100
+                  items:
+                    type: object
+                    required: [id, sequence, employee_id, action, local_occurred_at]
+                    additionalProperties: false
+                    properties:
+                      id: {type: string, format: uuid}
+                      sequence: {type: integer, minimum: 1}
+                      employee_id: {type: integer, minimum: 1}
+                      action: {type: string, enum: [IN, OUT, BREAK_START, BREAK_END, AUTO_PUNCH]}
+                      local_occurred_at: {type: string, format: date-time}
+      responses:
+        '200': {description: Resultado individual accepted, duplicate o rejected_with_reason; nunca sobrescribe hechos}
+        '401': {description: Terminal inválida o revocada}
+        '422': {description: Esquema inválido}
+components:
+  securitySchemes:
+    deviceToken:
+      type: http
+      scheme: bearer
