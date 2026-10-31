@@ -42,4 +42,18 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    public function master(): static
+    {
+        return $this->state(fn (): array => ['role' => 'master', 'tenant_id' => null]);
+    }
+
+    public function withMfa(): static
+    {
+        return $this->state(fn (): array => [
+            'mfa_secret' => 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ',
+            'mfa_confirmed_at' => now(), 'mfa_last_step' => 0, 'mfa_version' => 1,
+            'mfa_recovery_codes' => [hash('sha256', '00112233445566778899aabbccddeeff')],
+        ]);
+    }
 }

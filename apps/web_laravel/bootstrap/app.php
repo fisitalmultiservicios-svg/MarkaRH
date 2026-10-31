@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AuthenticateDevice;
+use App\Http\Middleware\RequireMfa;
 use App\Http\Middleware\RequireRole;
 use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Foundation\Application;
@@ -12,7 +13,7 @@ use Illuminate\Routing\Middleware\ThrottleRequests;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(web: __DIR__.'/../routes/web.php', api: __DIR__.'/../routes/api.php', commands: __DIR__.'/../routes/console.php', health: '/up')
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->alias(['role' => RequireRole::class, 'device' => AuthenticateDevice::class]);
+        $middleware->alias(['role' => RequireRole::class, 'device' => AuthenticateDevice::class, 'mfa' => RequireMfa::class]);
         $middleware->append(SecurityHeaders::class);
         $middleware->prependToPriorityList(ThrottleRequests::class, AuthenticateDevice::class);
         $middleware->redirectGuestsTo(fn () => route('login'));
@@ -20,5 +21,5 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(fn (Request $r) => $r->is('api/*') || $r->expectsJson());
-        $exceptions->dontFlash(['password', 'password_confirmation', 'enrollment_code', 'token']);
+        $exceptions->dontFlash(['password', 'password_confirmation', 'enrollment_code', 'token', 'totp_code', 'recovery_code', 'current_password']);
     })->create();

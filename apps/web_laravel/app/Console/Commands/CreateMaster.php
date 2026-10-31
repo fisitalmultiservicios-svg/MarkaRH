@@ -30,7 +30,7 @@ class CreateMaster extends Command
             return self::FAILURE;
         }
         User::create(['name' => $data['name'], 'email' => $data['email'], 'password' => $data['password'], 'role' => 'master', 'tenant_id' => null]);
-        $this->info('Maestro creado. No habilitar producción hasta incorporar MFA.');
+        $this->info('Maestro creado. En el primer acceso deberás configurar tu autenticador.');
 
         return self::SUCCESS;
     }

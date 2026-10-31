@@ -2,8 +2,11 @@
 
 namespace Tests;
 
+use App\Models\User;
+use App\Services\MfaSession;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Http\Request;
 use RuntimeException;
 
 abstract class TestCase extends BaseTestCase
@@ -18,5 +21,16 @@ abstract class TestCase extends BaseTestCase
         }
 
         return $app;
+    }
+
+    /** An MFA-authenticated fixture for domain tests; full flows live in MfaTest. */
+    protected function asVerifiedMaster(User $master): static
+    {
+        $this->actingAs($master)->withSession([]);
+        $request = Request::create('/');
+        $request->setLaravelSession($this->app['session.store']);
+        MfaSession::complete($request, $master);
+
+        return $this;
     }
 }

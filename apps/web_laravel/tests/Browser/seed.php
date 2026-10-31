@@ -18,6 +18,6 @@ Artisan::call('migrate:fresh', ['--force' => true]);
 $t = Tenant::firstOrCreate(['name' => 'Empresa de prueba del navegador']);
 $b = Branch::firstOrCreate(['tenant_id' => $t->id, 'name' => 'San José']);
 User::updateOrCreate(['email' => 'admin@browser.example'], ['tenant_id' => $t->id, 'name' => 'Administración de prueba', 'role' => 'admin', 'password' => 'BrowserTestPassword42!']);
-User::updateOrCreate(['email' => 'master@browser.example'], ['tenant_id' => null, 'name' => 'Maestro de prueba', 'role' => 'master', 'password' => 'BrowserTestPassword42!']);
+User::factory()->master()->withMfa()->create(['email' => 'master@browser.example', 'name' => 'Maestro de prueba', 'password' => 'BrowserTestPassword42!']);
 Employee::firstOrCreate(['tenant_id' => $t->id, 'internal_code' => 'BROWSER1'], ['branch_id' => $b->id, 'name' => 'Persona de prueba', 'job' => 'Operaciones']);
 echo "Browser test fixtures prepared in markarh_test only.\n";

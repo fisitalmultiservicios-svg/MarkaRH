@@ -51,3 +51,14 @@ La instancia HTTP del recorrido debe usar `DB_DATABASE=markarh_test`, puerto loc
 Los usuarios conocidos del archivo de fixtures solo se crean en `markarh_test`; no constituyen credenciales predeterminadas del producto. Detener la instancia del recorrido cuando termine. No hace falta instalar paquetes de navegador para ejecutar las pruebas PHPUnit.
 
 Boost se mantiene como herramienta de desarrollo. Su inyector de logs de navegador está deshabilitado para respetar la política CSP, sin permitir scripts inline.
+
+
+## Primer acceso y seguridad del Maestro
+
+Después de crear el Maestro con `./scripts/php php artisan markarh:create-master`, ingresa por `/acceso`. El primer acceso dirige a `/seguridad/configurar`: agrega la cuenta en un autenticador compatible, confirma su código y guarda los diez códigos de recuperación fuera del teléfono. Ningún recurso del Maestro queda disponible con la contraseña sola.
+
+Los siguientes accesos requieren el código actual o un código de recuperación aún no usado. En `/seguridad` se puede renovar el respaldo o cambiar de autenticador con contraseña y verificación adicional. Si se ingresa mediante recuperación, hay cinco minutos para confirmar la contraseña y vincular otro teléfono. No existe un bypass de MFA ni recuperación pública cuando se han perdido ambos factores.
+
+Para actualizar una instalación existente, instala desde el lockfile y aplica las migraciones sin regenerar APP_KEY. Conserva copias seguras de esa clave. El protocolo web requiere HTTPS en producción y reloj de servidor sincronizado. Consulta `SECURITY_PRIVACY.md` para límites de tiempo, cifrado e invalidación.
+
+La fixture del navegador configura un autenticador conocido solo para el Maestro ficticio de `markarh_test`. El test genera sus códigos mediante una referencia RFC 6238 independiente, comprueba recuperación y enrolamiento nuevos y evita capturar claves o códigos de respaldo en las imágenes guardadas.

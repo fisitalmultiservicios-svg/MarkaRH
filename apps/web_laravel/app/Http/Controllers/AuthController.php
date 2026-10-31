@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AuditLog;
 use App\Models\Tenant;
+use App\Services\MfaSession;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -37,9 +38,16 @@ class AuthController extends Controller
         }
         RateLimiter::clear($key);
         $request->session()->regenerate();
+        if ($user->role === 'master') {
+            MfaSession::begin($request, $user);
+            AuditLog::record($user, 'auth.password_verified');
+
+            return redirect()->route($user->mfa_confirmed_at ? 'security.challenge' : 'security.setup');
+        }
+        $request->session()->forget('mfa');
         AuditLog::record($user, 'auth.login');
 
-        return redirect()->route($user->role === 'master' ? 'master.index' : 'admin.dashboard');
+        return redirect()->route('admin.dashboard');
     }
 
     public function destroy(Request $request): RedirectResponse

@@ -12,7 +12,7 @@ Se inicia una aplicación Laravel 13 / PHP 8.3 en `apps/web_laravel/`, con vista
 
 - Sitio público: información institucional y acceso de administradores. No registra asistencia.
 - Portal empresarial: empleados, sucursales y lectura de eventos recibidos, siempre según empresa de la sesión.
-- Maestro: administración global de empresas, sin acceso implícito a evidencias de personal. La habilitación de MFA será condición previa a producción.
+- Maestro: administración global de empresas, sin acceso implícito a evidencias de personal. MFA obligatorio: la contraseña sola no autoriza las rutas del Maestro. El enrolamiento, la verificación y la recuperación están separados de los recursos administrativos.
 - Dispositivo: identidad y token propios, ligados a empresa y sucursal. La credencial de dispositivo no autentica una sesión administrativa.
 - Futura aplicación Flutter Windows/Android: escritura local transaccional, cifrado y cola persistente. Ninguna interfaz web sustituye esa aplicación.
 

@@ -2,7 +2,7 @@
 
 - `tenants`: empresas, nombre y estado. Borrado lógico/retención se decidirá antes de bajas reales.
 - `branches`: sucursales pertenecientes a una empresa, zona horaria.
-- `users`: identidad administrativa; rol `master` con empresa nula o `admin` con empresa asignada. Nunca autentican empleados.
+- `users`: identidad administrativa y estado MFA (secreto y hashes de respaldo cifrados, confirmación, último intervalo TOTP aceptado y versión de seguridad); rol `master` con empresa nula o `admin` con empresa asignada. Nunca autentican empleados.
 - `employees`: identificador interno único por empresa, nombre, puesto, sucursal y estado; sin PIN fijo ni salario en respuestas a terminal.
 - `device_enrollments`: hash de credencial temporal de un solo uso, empresa/sucursal, vencimiento y consumo.
 - `devices`: empresa/sucursal, hash de token opaco y estado autorizado/revocado.

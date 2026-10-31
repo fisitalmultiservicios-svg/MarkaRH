@@ -82,8 +82,8 @@ class MarkaRhTest extends TestCase
 
     public function test_master_creates_company_admin_with_hash_and_branch_atomically(): void
     {
-        $master = User::factory()->create(['role' => 'master', 'tenant_id' => null]);
-        $this->actingAs($master)->post('/maestro/empresas', ['name' => 'Nueva empresa', 'branch' => 'San José', 'admin_name' => 'Admin', 'email' => 'admin@test.example', 'password' => 'SecureInitial42!', 'password_confirmation' => 'SecureInitial42!'])->assertRedirect();
+        $master = User::factory()->master()->withMfa()->create();
+        $this->asVerifiedMaster($master)->post('/maestro/empresas', ['name' => 'Nueva empresa', 'branch' => 'San José', 'admin_name' => 'Admin', 'email' => 'admin@test.example', 'password' => 'SecureInitial42!', 'password_confirmation' => 'SecureInitial42!'])->assertRedirect();
         $admin = User::where('email', 'admin@test.example')->firstOrFail();
         $this->assertEquals('admin', $admin->role);
         $this->assertTrue(Hash::check('SecureInitial42!', $admin->password));
@@ -121,8 +121,8 @@ class MarkaRhTest extends TestCase
     public function test_master_enrollment_is_single_use_and_token_is_only_stored_hashed(): void
     {
         [$t, $b] = $this->company();
-        $m = User::factory()->create(['role' => 'master', 'tenant_id' => null]);
-        $r = $this->actingAs($m)->post('/maestro/empresas/'.$t->id.'/instalaciones', ['branch_id' => $b->id])->assertRedirect();
+        $m = User::factory()->master()->withMfa()->create();
+        $r = $this->asVerifiedMaster($m)->post('/maestro/empresas/'.$t->id.'/instalaciones', ['branch_id' => $b->id])->assertRedirect();
         $code = session('enrollment_code');
         $this->assertNotEmpty($code);
         $this->assertDatabaseHas('device_enrollments', ['code_hash' => hash('sha256', $code)]);
@@ -139,8 +139,8 @@ class MarkaRhTest extends TestCase
     {
         [$t, $b] = $this->company();
         [, $foreign] = $this->company('Otra');
-        $m = User::factory()->create(['role' => 'master', 'tenant_id' => null]);
-        $this->actingAs($m)->post('/maestro/empresas/'.$t->id.'/instalaciones', ['branch_id' => $foreign->id])->assertSessionHasErrors('branch_id');
+        $m = User::factory()->master()->withMfa()->create();
+        $this->asVerifiedMaster($m)->post('/maestro/empresas/'.$t->id.'/instalaciones', ['branch_id' => $foreign->id])->assertSessionHasErrors('branch_id');
         DeviceEnrollment::create(['tenant_id' => $t->id, 'branch_id' => $b->id, 'code_hash' => hash('sha256', 'expired'), 'expires_at' => now()->subMinute()]);
         $this->postJson('/api/v1/device/enroll', ['enrollment_code' => 'expired', 'name' => 'No válido'])->assertUnprocessable();
         $this->assertDatabaseCount('devices', 0);
@@ -266,8 +266,8 @@ class MarkaRhTest extends TestCase
         $payload = '<img src=x onerror=alert(1)>';
         $this->post('/contacto', ['name' => 'Contacto', 'email' => 'contacto@test.example', 'company' => 'Empresa', 'message' => $payload, 'consent' => '1'])->assertRedirect('/#consulta');
         $this->actingAs($u)->get('/maestro/consultas')->assertForbidden();
-        $m = User::factory()->create(['role' => 'master', 'tenant_id' => null]);
-        $this->actingAs($m)->get('/maestro/consultas')->assertOk()->assertSee($payload)->assertDontSee($payload, false);
+        $m = User::factory()->master()->withMfa()->create();
+        $this->asVerifiedMaster($m)->get('/maestro/consultas')->assertOk()->assertSee($payload)->assertDontSee($payload, false);
     }
 
     public function test_api_rate_limit_is_per_authenticated_terminal(): void

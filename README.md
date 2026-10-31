@@ -13,9 +13,9 @@ Sistema de asistencia laboral para empresas de Costa Rica. Se inició el código
 - [Capturas de la base oficial](docs/capturas-oficiales)
 - [Descargar código oficial desde GitHub](https://github.com/fisitalmultiservicios-svg/MarkaRH/archive/refs/heads/desarrollo-oficial.zip)
 
-La base oficial usa sesiones, contraseñas hasheadas y persistencia del servidor. No utiliza el PIN ni los roles simulados del prototipo. El Maestro crea las empresas y emite credenciales de instalación de un solo uso. La API de terminal es independiente del login administrativo; la web no ofrece marcación de empleados.
+La base oficial usa sesiones, contraseñas hasheadas, MFA obligatorio para el Maestro y persistencia del servidor. No utiliza el PIN ni los roles simulados del prototipo. El Maestro crea las empresas y emite credenciales de instalación de un solo uso. La API de terminal es independiente del login administrativo; la web no ofrece marcación de empleados.
 
-**En desarrollo, no habilitado para uso laboral real.** MFA, apps nativas Windows/Android, almacenamiento local cifrado, firmas de terminal, cálculo laboral y validación cPanel siguen pendientes. Consulta el estado de cada capacidad antes de desplegar.
+**En desarrollo, no habilitado para uso laboral real.** Apps nativas Windows/Android, almacenamiento local cifrado, firmas de terminal, cálculo laboral y validación cPanel siguen pendientes. Consulta el estado de cada capacidad antes de desplegar.
 
 ## Prototipo UX aprobado
 

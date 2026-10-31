@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MasterController;
+use App\Http\Controllers\MfaController;
 use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +16,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/acceso', [AuthController::class, 'store'])->middleware('throttle:20,1')->name('login.store');
 });
 Route::post('/salir', [AuthController::class, 'destroy'])->middleware('auth')->name('logout');
-Route::middleware(['auth', 'role:master'])->prefix('maestro')->name('master.')->group(function () {
+Route::middleware(['auth', 'role:master', 'mfa'])->prefix('maestro')->name('master.')->group(function () {
     Route::get('/', [MasterController::class, 'index'])->name('index');
     Route::get('/consultas', [MasterController::class, 'inquiries'])->name('inquiries');
     Route::post('/empresas', [MasterController::class, 'store'])->name('tenants.store');
@@ -34,4 +35,17 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/dispositivos/{device}/revocar', [AdminController::class, 'revoke'])->name('devices.revoke');
     Route::get('/registros', [AdminController::class, 'events'])->name('events');
     Route::get('/bitacora', [AdminController::class, 'audit'])->name('audit');
+});
+
+Route::middleware(['auth', 'role:master'])->prefix('seguridad')->name('security.')->group(function () {
+    Route::get('/configurar', [MfaController::class, 'setup'])->name('setup');
+    Route::post('/configurar', [MfaController::class, 'enable'])->middleware('throttle:20,1')->name('enable');
+    Route::get('/verificar', [MfaController::class, 'challenge'])->name('challenge');
+    Route::post('/verificar', [MfaController::class, 'verify'])->middleware('throttle:20,1')->name('verify');
+    Route::middleware('mfa')->group(function () {
+        Route::get('/', [MfaController::class, 'index'])->name('index');
+        Route::get('/respaldo', [MfaController::class, 'recovery'])->name('recovery');
+        Route::post('/respaldo/renovar', [MfaController::class, 'regenerate'])->middleware('throttle:10,1')->name('regenerate');
+        Route::post('/autenticador/reemplazar', [MfaController::class, 'reset'])->middleware('throttle:10,1')->name('reset');
+    });
 });

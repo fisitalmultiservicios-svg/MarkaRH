@@ -8,12 +8,13 @@ Prototipo aprobado y preservado. Arquitectura, límites de permisos, esquema ini
 
 - Laravel/PHP, migraciones, configuración reproducible y pruebas.
 - Login administrativo con sesiones, protección CSRF y limitación de intentos.
+- MFA obligatorio para Maestro: configurado y probado, con respaldo de un solo uso.
 - Empresas, sucursales, empleados y separación Maestro/administrador.
 - Eventos recibidos de terminal, sin creación desde el portal.
 - Aprovisionamiento de un solo uso, tokens de dispositivo hasheados e ingesta idempotente.
 - Auditoría de acciones sensibles.
 
-Antes de producción: MFA Maestro, permisos delegados por sucursal, recuperación de cuentas, control de sesiones, pruebas de carga, rotación de credenciales, claves/firma de terminal y staging cPanel. El alcance efectivamente completado se registra en `STATUS.md`.
+Antes de producción: permisos delegados por sucursal, recuperación de cuentas, control de sesiones, pruebas de carga, rotación de credenciales, claves/firma de terminal y staging cPanel. El alcance efectivamente completado se registra en `STATUS.md`.
 
 ## 2. Marcador nativo
 

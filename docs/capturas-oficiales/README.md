@@ -5,3 +5,5 @@ Estas imágenes se generaron mediante pruebas en navegador sobre `markarh_test`,
 - `web.png`: sitio oficial basado en el diseño aprobado.
 - `admin.png`: portal empresarial conectado al backend.
 - `maestro.png`: gestión de empresas con roles y sesiones reales.
+
+- `mfa.png`: verificación del autenticador, con el campo vacío. No se guardan capturas de QR privados ni códigos de recuperación.
